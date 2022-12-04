@@ -1,12 +1,18 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
+import { RecoilRoot } from "recoil";
 import Formulario from "./Formulario"
+
 
 
 // jest 
 test( "quando o input está vazio, novos paticipantes não podem ser adicionados", ()=> {
 
-    render(<Formulario />)
+    render(
+          <RecoilRoot>
+            <Formulario />
+          </RecoilRoot>
+          )
 
     // encontrar no Dom o input
     const input = screen.getByPlaceholderText("Insira os nomes dos participantes")
@@ -22,7 +28,9 @@ test( "quando o input está vazio, novos paticipantes não podem ser adicionados
 })
 
 test("adicionar um participante caso exista um nome preenchido", () => {
-    render(<Formulario />)
+    render(<RecoilRoot>
+        <Formulario />
+    </RecoilRoot>)
     // encontrar no Dom o input
     const input = screen.getByPlaceholderText("Insira os nomes dos participantes")
     // encontrar o botão
@@ -38,8 +46,8 @@ test("adicionar um participante caso exista um nome preenchido", () => {
     fireEvent.click(botao)
 
     // garantir que o input esteja com o foco ativo
-    expect(input).toHavenFocus()
+    expect(input).toHaveFocus()
 
     // garantir que o input não tenha umn valor
-    expect(input).toHaValue("")
+    expect(input).toHaveValue("")
 })
