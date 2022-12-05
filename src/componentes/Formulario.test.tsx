@@ -5,10 +5,8 @@ import Formulario from "./Formulario"
 
 
 
-// jest 
 test( "quando o input está vazio, novos paticipantes não podem ser adicionados", ()=> {
-
-    render(
+   render(
           <RecoilRoot>
             <Formulario />
           </RecoilRoot>
@@ -28,26 +26,48 @@ test( "quando o input está vazio, novos paticipantes não podem ser adicionados
 })
 
 test("adicionar um participante caso exista um nome preenchido", () => {
-    render(<RecoilRoot>
-        <Formulario />
-    </RecoilRoot>)
-    // encontrar no Dom o input
+    render(
+        <RecoilRoot>
+          <Formulario />
+        </RecoilRoot>
+        )
     const input = screen.getByPlaceholderText("Insira os nomes dos participantes")
-    // encontrar o botão
     const botao = screen.getByRole("button")
-    // inserir um valor no input
     fireEvent.change(input, {
         target: {
             value: "Maria Luisa"
         }
     })
-
-    // clicar nbo botão de submeter
     fireEvent.click(botao)
 
-    // garantir que o input esteja com o foco ativo
     expect(input).toHaveFocus()
 
-    // garantir que o input não tenha umn valor
     expect(input).toHaveValue("")
+    
+})
+
+test("nomes repetidos não podem ser adicionados a lista", () => {
+    render(
+        <RecoilRoot>
+            <Formulario />
+        </RecoilRoot>)
+    const input = screen.getByPlaceholderText("Insira os nomes dos participantes")
+    const botao = screen.getByRole("button")
+    fireEvent.change(input, {
+        target: {
+            value: "Maria Luisa"
+        }
+    })
+    fireEvent.click(botao)
+    fireEvent.change(input, {
+        target: {
+            value: "Maria Luisa"
+        }
+    })
+    fireEvent.click(botao)
+
+    const mensagemDeErro = screen.getByRole("alert")
+
+    expect(mensagemDeErro.textContent).toBe("Nomes repetidos não são permitidos!")
+
 })
