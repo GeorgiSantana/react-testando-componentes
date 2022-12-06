@@ -8,6 +8,9 @@ export const useAdicionarParticipante = () => {
     return(nomeDoParticipante: string) => {
         if (lista.includes(nomeDoParticipante)) {
             setErro('Nomes repetidos não são permitidos!')
+            setTimeout(() => {
+                setErro("")
+            }, 5000)
             return
         }
         return setLista(listaAtual => [...listaAtual, nomeDoParticipante])
